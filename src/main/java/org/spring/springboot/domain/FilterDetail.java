@@ -5,7 +5,7 @@ public class FilterDetail {
 
     private Long id;
     private String name;
-    private String desc;
+    private String description;
     private String filter;
     private Integer priority;
     private Long objectId;
@@ -27,12 +27,12 @@ public class FilterDetail {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getFilter() {

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
+    <link th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/default.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <meta charset="UTF-8"/>
+    <title>新增细节</title>
+</head>
+
+<body>
+
+<div class="contentDiv">
+
+    <h5><a th:href="@{/upload}">表格转换</a></h5>
+    <h5><a th:href="@{/filter/object}">过滤对象列表</a></h5>
+
+    <table class="table table-hover table-condensed">
+        <legend>
+            <strong>新增细节</strong>
+        </legend>
+        <form class="form-horizontal col-5" role="form" th:action="@{/filter/detail/create}" method="post">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="请输入名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">描述</label>
+                <div class="col-sm-10">
+                    <input type="text" name="description" class="form-control" id="description" placeholder="请输入描述">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="filter" class="col-sm-2 control-label">过滤条件</label>
+                <div class="col-sm-10">
+                    <input type="text" name="filter" class="form-control" id="filter" placeholder="请输入过滤条件">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="priority" class="col-sm-2 control-label">过滤等级</label>
+                <div class="col-sm-10">
+                    <input type="text" name="priority" class="form-control" id="priority" placeholder="请输入过滤等级">
+                </div>
+            </div>
+            <input type="text" name="objectId" class="form-control" id="objectId" th:value="${objectId}" hidden>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </div>
+        </form>
+
+    </table>
+</div>
+
+</body>
+</html>

@@ -46,6 +46,27 @@ public class StringUtil {
 	private static final String LINE = "-----------------------<br/>";
 	private static final String UM_SERVICE_SUPPORT_UNIT = "UM服务支持小组<br/>";
 	private static final String THIS_IS_AN_AUTO_GENERATED_EMAIL_DO_NOT_REPLY = "(这是一封自动产生的email，请勿回复。) ";
+
+	/**
+	 *  例：1->A 88->CJ
+	 * @param columnIndex
+	 * @return
+	 */
+	public static String getExcelColIndexToStr(int columnIndex) {
+		if (columnIndex <= 0) {
+			return null;
+		}
+		String columnStr = "";
+		columnIndex--;
+		do {
+			if (columnStr.length() > 0) {
+				columnIndex--;
+			}
+			columnStr = ((char) (columnIndex % 26 + (int) 'A')) + columnStr;
+			columnIndex = (int) ((columnIndex - columnIndex % 26) / 26);
+		} while (columnIndex > 0);
+		return columnStr;
+	}
 	
 	/**
 	 * 检查字符串是否为空值

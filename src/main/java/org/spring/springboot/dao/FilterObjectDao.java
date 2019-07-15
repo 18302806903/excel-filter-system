@@ -14,7 +14,7 @@ public interface FilterObjectDao {
     @Results({
             @Result(id=true,property="id",column="id"),
             @Result(property="name",column="name"),
-            @Result(property="desc",column="desc"),
+            @Result(property="description",column="description"),
             @Result(property="filterDetailList",column="id",javaType= List.class, many=@Many(select="org.spring.springboot.dao.FilterDetailDao.getFilterDetailsByObjectId"))
     })
     FilterObject getFilterObjectById(int id);
@@ -23,8 +23,14 @@ public interface FilterObjectDao {
     @Results({
             @Result(id=true,property="id",column="id"),
             @Result(property="name",column="name"),
-            @Result(property="desc",column="desc"),
+            @Result(property="description",column="description"),
             @Result(property="filterDetailList",column="id",javaType= List.class, many=@Many(select="org.spring.springboot.dao.FilterDetailDao.getFilterDetailsByObjectId"))
     })
     List<FilterObject> getAllFilterObject();
+
+    @Insert("insert into filter_object(name, description) values(#{name},#{description})")
+    int saveFilterObject(FilterObject filterObject);
+
+    @Delete("delete from filter_object where id=#{id}")
+    int removeFilterObject(int id);
 }

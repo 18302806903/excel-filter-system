@@ -14,7 +14,7 @@ public interface FilterDetailDao {
     @Results({
             @Result(id=true,property="id",column="id"),
             @Result(property="name",column="name"),
-            @Result(property="desc",column="desc"),
+            @Result(property="description",column="description"),
             @Result(property="filter",column="filter"),
             @Result(property="priority",column="priority"),
             @Result(property="objectId",column="object_id"),
@@ -22,14 +22,31 @@ public interface FilterDetailDao {
     })
     List<FilterDetail> getFilterDetailsByObjectId(int objectId);
 
+    @Select("select * from filter_detail where id=#{id}")
+    @Results({
+            @Result(id=true,property="id",column="id"),
+            @Result(property="name",column="name"),
+            @Result(property="description",column="description"),
+            @Result(property="filter",column="filter"),
+            @Result(property="priority",column="priority"),
+            @Result(property="objectId",column="object_id"),
+    })
+    FilterDetail getFilterDetailsById(int id);
+
     @Select("select * from filter_detail")
     @Results({
             @Result(id=true,property="id",column="id"),
             @Result(property="name",column="name"),
-            @Result(property="desc",column="desc"),
+            @Result(property="description",column="description"),
             @Result(property="filter",column="filter"),
             @Result(property="priority",column="priority"),
             @Result(property="objectId",column="object_id"),
     })
     List<FilterDetail> getAllFilterDetails();
+
+    @Insert("insert into filter_detail(name, description, filter, priority, object_id) values(#{name},#{description},#{filter},#{priority},#{objectId})")
+    int saveFilterDetail(FilterDetail filterDetail);
+
+    @Delete("delete from filter_detail where id=#{id}")
+    int removeFilterDetail(int id);
 }
