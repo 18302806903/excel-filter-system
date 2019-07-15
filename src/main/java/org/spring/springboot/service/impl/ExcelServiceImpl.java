@@ -56,8 +56,13 @@ public class ExcelServiceImpl implements ExcelService {
                             }
                             String cellStr = xSheet.getRow(i).getCell(j).toString();
                             XSSFCell xCell=xSheet.getRow(i).getCell(j);
-                            if (cellStr.trim().contains(filter.trim()) || cellStr.trim().indexOf(filter.trim()) != -1){
-                                String replaceStr = cellStr.replace(filter,"");
+
+                            if (StringUtils.deleteWhitespace(cellStr.toLowerCase()).contains(StringUtils.deleteWhitespace(filter.toLowerCase()).replace(" ",""))){
+                                if (filter.equalsIgnoreCase("lady")){
+                                    System.err.println("hello");
+                                }
+                                String finalFilter = "(?i)"+filter;
+                                String replaceStr = cellStr.replaceAll(finalFilter,"");
                                 xCell.setCellValue(replaceStr);
 
                                 TransformLog transformLog = new TransformLog();
@@ -66,11 +71,6 @@ public class ExcelServiceImpl implements ExcelService {
                                 transformLog.setLocation(StringUtil.getExcelColIndexToStr(1+j)+ String.valueOf(1+i));
                                 transformLog.setTextBefore(cellStr);
                                 transformLog.setTextAfter(replaceStr);
-                                if ("AC403".equals(StringUtil.getExcelColIndexToStr(1+j)+ String.valueOf(1+i))){
-                                    System.err.println("--------------------------------------");
-                                    System.err.println(cellStr);
-                                    System.err.println("--------------------------------------");
-                                }
                                 if (StringUtils.equals(cellStr, replaceStr)){
                                     transformLog.setSuccess(false);
                                 } else {
@@ -158,18 +158,4 @@ public class ExcelServiceImpl implements ExcelService {
             return String.valueOf(xCell.getStringCellValue());
         }
     }
-
-    private void doFilter(String cellStr, XSSFCell xCell){
-        // 若条件匹配修改对象
-        if (cellStr.contains(",China")){
-            xCell.setCellValue(cellStr.replace(",China",""));
-        } else if (cellStr.contains("<br>Place Of Origin:China (Mainland)")){
-            xCell.setCellValue(cellStr.replace("<br>Place Of Origin:China (Mainland)",""));
-        } else if (cellStr.contains("Place Of Origin:China (Mainland),")){
-            xCell.setCellValue(cellStr.replace("Place Of Origin:China (Mainland),",""));
-        } else if (cellStr.contains("China")){
-            xCell.setCellValue(cellStr.replace("China",""));
-        }
-    }
-
 }
