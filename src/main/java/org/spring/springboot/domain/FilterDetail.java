@@ -7,6 +7,7 @@ public class FilterDetail {
     private String name;
     private String description;
     private String filter;
+    private String replaceText;
     private Integer priority;
     private Long objectId;
 //    private FilterObject filterObject;
@@ -41,6 +42,14 @@ public class FilterDetail {
 
     public void setFilter(String filter) {
         this.filter = filter;
+    }
+
+    public String getReplaceText() {
+        return replaceText;
+    }
+
+    public void setReplaceText(String replaceText) {
+        this.replaceText = replaceText;
     }
 
     public Integer getPriority() {

@@ -6,6 +6,7 @@ public class TransformLog {
     private Long id;
     private String excelName;
     private String filter;
+    private String replaceText;
     private String location;
     private String textBefore;
     private String textAfter;
@@ -33,6 +34,14 @@ public class TransformLog {
 
     public void setFilter(String filter) {
         this.filter = filter;
+    }
+
+    public String getReplaceText() {
+        return replaceText;
+    }
+
+    public void setReplaceText(String replaceText) {
+        this.replaceText = replaceText;
     }
 
     public String getLocation() {

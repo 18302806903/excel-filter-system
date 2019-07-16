@@ -27,6 +27,7 @@
                 <th>名称</th>
                 <th>描述</th>
                 <th>过滤条件</th>
+                <th>替换内容</th>
                 <th>优先等级</th>
                 <th>所属对象</th>
             </tr>
@@ -36,6 +37,7 @@
                 <th scope="row" th:text="${filterDetail.name}"></th>
                 <td th:text="${filterDetail.description}"></td>
                 <td th:text="${filterDetail.filter}"></td>
+                <td th:text="${filterDetail.replaceText}"></td>
                 <td th:text="${filterDetail.priority}"></td>
                 <td th:text="${filterDetail.objectId}"></td>
                 <td><a class="btn btn-danger" th:href="@{/filter/detail/remove/{id}(id=${filterDetail.id})}">删除</a></td>

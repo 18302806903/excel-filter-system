@@ -104,8 +104,8 @@ public class ExcelHandlerController {
             response.setContentType("application/force-download");// 设置强制下载不打开
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
             String fileName = file.getOriginalFilename();
-            String outputExcelName = "transform-"+dateFormat.format(new Date())+"-"+fileName;
-            response.addHeader("Content-Disposition","attachment;fileName=transform-" +dateFormat.format
+            String outputExcelName = dateFormat.format(new Date())+"-"+fileName;
+            response.addHeader("Content-Disposition","attachment;fileName=" +dateFormat.format
                     (new Date())+"-"+new String(fileName.getBytes("UTF-8"),"iso-8859-1"));
             excelService.writeExcelPOI(file.getInputStream(), response, outputExcelName);
         } catch (IOException e){

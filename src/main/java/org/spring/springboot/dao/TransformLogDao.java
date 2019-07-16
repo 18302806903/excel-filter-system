@@ -15,6 +15,7 @@ public interface TransformLogDao {
             @Result(id=true,property="id",column="id"),
             @Result(property="excelName",column="excel_name"),
             @Result(property="filter",column="filter"),
+            @Result(property="replaceText",column="replace_text"),
             @Result(property="location",column="location"),
             @Result(property="textBefore",column="text_before"),
             @Result(property="textAfter",column="text_after"),
@@ -31,7 +32,7 @@ public interface TransformLogDao {
 //    })
 //    List<FilterObject> getAllFilterObject();
 
-    @Insert("insert into transform_log(excel_name, filter, location, text_before, text_after, success) values(#{excelName},#{filter},#{location},#{textBefore},#{textAfter},#{success})")
+    @Insert("insert into transform_log(excel_name, filter,replace_text, location, text_before, text_after, success) values(#{excelName},#{filter},#{replaceText},#{location},#{textBefore},#{textAfter},#{success})")
     int saveTransformLog(TransformLog transformLog);
 
 //    @Delete("delete from filter_object where id=#{id}")

@@ -44,6 +44,7 @@ public class ExcelServiceImpl implements ExcelService {
             filterDetails.sort((a,b) -> StringUtil.sort(String.valueOf(a.getPriority()), String.valueOf(b.getPriority())));
             for (FilterDetail filterDetail : filterDetails){
                 String filter = filterDetail.getFilter();
+                String replaceText = filterDetail.getReplaceText();
                 if (filter != null){
                     int totalRows = xSheet.getLastRowNum();
                     for (int i = 0; i <= totalRows; i++){
@@ -58,20 +59,24 @@ public class ExcelServiceImpl implements ExcelService {
                             XSSFCell xCell=xSheet.getRow(i).getCell(j);
 
                             if (StringUtils.deleteWhitespace(cellStr.toLowerCase()).contains(StringUtils.deleteWhitespace(filter.toLowerCase()).replace(" ",""))){
-                                if (filter.equalsIgnoreCase("lady")){
-                                    System.err.println("hello");
-                                }
                                 String finalFilter = "(?i)"+filter;
-                                String replaceStr = cellStr.replaceAll(finalFilter,"");
-                                xCell.setCellValue(replaceStr);
+                                String replaceResultText = null;
+                                if (!StringUtil.checkNull(replaceText)){
+                                    replaceResultText = cellStr.replaceAll(finalFilter,replaceText);
+                                } else {
+                                    replaceResultText = cellStr.replaceAll(finalFilter,"");
+                                }
+
+                                xCell.setCellValue(replaceResultText);
 
                                 TransformLog transformLog = new TransformLog();
                                 transformLog.setExcelName(excelName);
                                 transformLog.setFilter(filter);
+                                transformLog.setReplaceText(replaceText);
                                 transformLog.setLocation(StringUtil.getExcelColIndexToStr(1+j)+ String.valueOf(1+i));
                                 transformLog.setTextBefore(cellStr);
-                                transformLog.setTextAfter(replaceStr);
-                                if (StringUtils.equals(cellStr, replaceStr)){
+                                transformLog.setTextAfter(replaceResultText);
+                                if (StringUtils.equals(cellStr, replaceResultText)){
                                     transformLog.setSuccess(false);
                                 } else {
                                     transformLog.setSuccess(true);

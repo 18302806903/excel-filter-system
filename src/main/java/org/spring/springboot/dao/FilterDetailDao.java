@@ -16,6 +16,7 @@ public interface FilterDetailDao {
             @Result(property="name",column="name"),
             @Result(property="description",column="description"),
             @Result(property="filter",column="filter"),
+            @Result(property="replaceText",column="replace_text"),
             @Result(property="priority",column="priority"),
             @Result(property="objectId",column="object_id"),
 //            @Result(property="filterObject",column="id",javaType= List.class, many=@Many(select="org.spring.springboot.domain.FilterDetail"))
@@ -28,6 +29,7 @@ public interface FilterDetailDao {
             @Result(property="name",column="name"),
             @Result(property="description",column="description"),
             @Result(property="filter",column="filter"),
+            @Result(property="replaceText",column="replace_text"),
             @Result(property="priority",column="priority"),
             @Result(property="objectId",column="object_id"),
     })
@@ -39,12 +41,13 @@ public interface FilterDetailDao {
             @Result(property="name",column="name"),
             @Result(property="description",column="description"),
             @Result(property="filter",column="filter"),
+            @Result(property="replaceText",column="replace_text"),
             @Result(property="priority",column="priority"),
             @Result(property="objectId",column="object_id"),
     })
     List<FilterDetail> getAllFilterDetails();
 
-    @Insert("insert into filter_detail(name, description, filter, priority, object_id) values(#{name},#{description},#{filter},#{priority},#{objectId})")
+    @Insert("insert into filter_detail(name, description, filter,replace_text, priority, object_id) values(#{name},#{description},#{filter},#{replaceText},#{priority},#{objectId})")
     int saveFilterDetail(FilterDetail filterDetail);
 
     @Delete("delete from filter_detail where id=#{id}")
