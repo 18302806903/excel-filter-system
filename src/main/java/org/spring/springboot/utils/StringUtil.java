@@ -67,6 +67,31 @@ public class StringUtil {
 		} while (columnIndex > 0);
 		return columnStr;
 	}
+
+	/**
+	 * 去除字符串以str1开始 -> 以str2结束的所有字符，包括str1 str2
+	 *
+	 * @param body
+	 * @param str1
+	 * @param str2
+	 * @return
+	 */
+	public static String subRangeString(String body,String str1,String str2) {
+		while (true) {
+			int index1 = body.indexOf(str1);
+			if (index1 != -1) {
+				int index2 = body.indexOf(str2, index1);
+				if (index2 != -1) {
+					String str3 = body.substring(0, index1) + body.substring(index2 +    str2.length(), body.length());
+					body = str3;
+				}else {
+					return body;
+				}
+			}else {
+				return body;
+			}
+		}
+	}
 	
 	/**
 	 * 检查字符串是否为空值

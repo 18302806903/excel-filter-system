@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ExcelHandlerController {
@@ -88,6 +89,19 @@ public class ExcelHandlerController {
     public ModelAndView filterSearchResultView(TransformLog transformLog) {
         ModelAndView mav = new ModelAndView("filterSearchResult");
         List<TransformLog> transformLogList = excelService.getTransformLogByExcelName(transformLog.getExcelName());
+        mav.addObject("transformLog", transformLogList);
+        return mav;
+    }
+
+    @RequestMapping(value = "/filter/result/simple/search", method = RequestMethod.GET)
+    public String filterSimpleSearchView() {
+        return "transformLogSimpleSearch";
+    }
+
+    @PostMapping(value = "/filter/result/simple/search")
+    public ModelAndView filterSimpleSearchResultView(TransformLog transformLog) {
+        ModelAndView mav = new ModelAndView("transformLogSimpleSearchResult");
+        Set<TransformLog> transformLogList = excelService.getSimpleTransformLogByExcelName(transformLog.getExcelName());
         mav.addObject("transformLog", transformLogList);
         return mav;
     }

@@ -7,6 +7,7 @@ import org.spring.springboot.domain.TransformLog;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 public interface ExcelService {
 
@@ -24,6 +25,7 @@ public interface ExcelService {
     int removeFilterDetail(int id);
 
     List<TransformLog> getTransformLogByExcelName(String excelName);
+    Set<TransformLog> getSimpleTransformLogByExcelName(String excelName);
     int saveTransformLog(TransformLog transformLog);
 
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
+    <link th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/default.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <meta charset="UTF-8"/>
+    <title>查询去重转换</title>
+</head>
+
+<body>
+
+<div class="contentDiv">
+    <h5><a th:href="@{/upload}">表格转换</a></h5>
+    <h5><a th:href="@{/filter/object}">过滤对象列表</a></h5>
+    <h5><a th:href="@{/filter/result/search}">查询详细转换结果</a></h5>
+    <h5><a th:href="@{/filter/result/simple/search}">查询去重转换结果</a></h5>
+
+    <table class="table table-hover table-condensed">
+        <legend>
+            <strong>查询去重转换</strong>
+        </legend>
+        <form class="form-horizontal col-5" role="form" th:action="@{/filter/result/simple/search}" method="post">
+            <div class="form-group">
+                <label for="excelName" class="col-sm-2 control-label">表格名称</label>
+                <div class="col-sm-10">
+                    <input type="text" name="excelName" class="form-control" id="excelName" placeholder="请输入转换后的表格名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">查询</button>
+                </div>
+            </div>
+        </form>
+
+    </table>
+</div>
+
+</body>
+</html>

@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -58,7 +59,9 @@ public class ExcelServiceImpl implements ExcelService {
                             String cellStr = xSheet.getRow(i).getCell(j).toString();
                             XSSFCell xCell=xSheet.getRow(i).getCell(j);
 
-                            if (StringUtils.deleteWhitespace(cellStr.toLowerCase()).contains(StringUtils.deleteWhitespace(filter.toLowerCase()).replace(" ",""))){
+                            boolean isContainsFilter = StringUtils.deleteWhitespace(cellStr.toLowerCase()).contains(StringUtils.deleteWhitespace(filter.toLowerCase()).replace(" ",""));
+                            // 完全匹配包含
+                            if (isContainsFilter){
                                 String finalFilter = "(?i)"+filter;
                                 String replaceResultText = null;
                                 if (!StringUtil.checkNull(replaceText)){
@@ -68,20 +71,46 @@ public class ExcelServiceImpl implements ExcelService {
                                 }
 
                                 xCell.setCellValue(replaceResultText);
+                                saveTransformLogsAudit(excelName,cellStr, filter, replaceText, replaceResultText, i, j);
+                            } else {
+                                // 特殊匹配包含，是否包含 *
+                                if (filter.contains("*")){
+                                    if (filter.startsWith("*")){
 
-                                TransformLog transformLog = new TransformLog();
-                                transformLog.setExcelName(excelName);
-                                transformLog.setFilter(filter);
-                                transformLog.setReplaceText(replaceText);
-                                transformLog.setLocation(StringUtil.getExcelColIndexToStr(1+j)+ String.valueOf(1+i));
-                                transformLog.setTextBefore(cellStr);
-                                transformLog.setTextAfter(replaceResultText);
-                                if (StringUtils.equals(cellStr, replaceResultText)){
-                                    transformLog.setSuccess(false);
-                                } else {
-                                    transformLog.setSuccess(true);
+                                    } else if(filter.endsWith("*")){
+                                        String[] arrays = filter.split("\\*");
+                                        String finalFilter = cellStr.substring(cellStr.indexOf(arrays[0]));;
+                                        String replaceResultText = cellStr.replaceAll(finalFilter, "");
+                                        xCell.setCellValue(replaceResultText);
+                                        saveTransformLogsAudit(excelName,cellStr, filter, replaceText, replaceResultText, i, j);
+                                    } else {
+                                        // * 在中间，
+                                        String[] arrays = filter.split("\\*");
+                                        if (arrays.length != 2){
+                                            // 包含多个* 错误
+                                        } else {
+                                            if (cellStr.contains(arrays[0])){
+                                                String containStr =cellStr.substring(cellStr.indexOf(arrays[0]));
+                                                if (cellStr.contains(containStr)){
+                                                    String replaceResultText = StringUtil.subRangeString(cellStr, arrays[0], arrays[1]);
+                                                    xCell.setCellValue(replaceResultText);
+                                                    saveTransformLogsAudit(excelName,cellStr, filter, replaceText, replaceResultText, i, j);
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else if (filter.contains("?")){
+                                    if (filter.endsWith("?")){
+                                        String[] arrays = filter.split("\\?");
+                                        if (cellStr.contains(arrays[0])){
+                                            String[] cellArrays = cellStr.split(arrays[0]);
+                                            String replaceResultText = cellArrays[0] + arrays[0] + 9 + cellArrays[1].substring(1);
+                                            xCell.setCellValue(replaceResultText);
+                                            saveTransformLogsAudit(excelName,cellStr, filter, replaceText, replaceResultText, i, j);
+                                        }
+
+                                    }
                                 }
-                                saveTransformLog(transformLog);
                             }
                         }
                     }
@@ -151,6 +180,11 @@ public class ExcelServiceImpl implements ExcelService {
         return transformLogDao.saveTransformLog(transformLog);
     }
 
+    @Override
+    public Set<TransformLog> getSimpleTransformLogByExcelName(String excelName) {
+        return transformLogDao.getSimpleTransformLogByExcelName(excelName);
+    }
+
     private String getValue(XSSFCell xCell) {
         if (xCell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN) {
 
@@ -162,5 +196,21 @@ public class ExcelServiceImpl implements ExcelService {
 
             return String.valueOf(xCell.getStringCellValue());
         }
+    }
+
+    private void saveTransformLogsAudit(String excelName,String cellStr, String filter, String replaceText, String replaceResultText, int i, int j){
+        TransformLog transformLog = new TransformLog();
+        transformLog.setExcelName(excelName);
+        transformLog.setFilter(filter);
+        transformLog.setReplaceText(replaceText);
+        transformLog.setLocation(StringUtil.getExcelColIndexToStr(1+j)+ String.valueOf(1+i));
+        transformLog.setTextBefore(cellStr);
+        transformLog.setTextAfter(replaceResultText);
+        if (StringUtils.equals(cellStr, replaceResultText)){
+            transformLog.setSuccess(false);
+        } else {
+            transformLog.setSuccess(true);
+        }
+        saveTransformLog(transformLog);
     }
 }

@@ -5,6 +5,7 @@ import org.spring.springboot.domain.FilterObject;
 import org.spring.springboot.domain.TransformLog;
 
 import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface TransformLogDao {
@@ -22,6 +23,17 @@ public interface TransformLogDao {
             @Result(property="success",column="success"),
     })
     List<TransformLog> getTransformLogByExcelName(String excelName);
+
+    @Select("select distinct excel_name,filter,replace_text,text_before,text_after,success from transform_log where excel_name=#{excelName}")
+    @Results({
+            @Result(property="excelName",column="excel_name"),
+            @Result(property="filter",column="filter"),
+            @Result(property="replaceText",column="replace_text"),
+            @Result(property="textBefore",column="text_before"),
+            @Result(property="textAfter",column="text_after"),
+            @Result(property="success",column="success"),
+    })
+    Set<TransformLog> getSimpleTransformLogByExcelName(String excelName);
 
 //    @Select("select * from filter_object")
 //    @Results({
